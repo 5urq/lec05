@@ -2,6 +2,7 @@ package com.team02.lec05.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -25,11 +26,13 @@ public class Sample3AuthConfiguration {
             .logoutSuccessUrl("/"))
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/sample5/**").authenticated()
+            .requestMatchers("/sample58/**").authenticated()
             .anyRequest().permitAll())
         .csrf(csrf -> csrf
             .ignoringRequestMatchers("/h2-console/*"))
         .headers(headers -> headers
-            .frameOptions(frameOptions -> frameOptions.sameOrigin()));
+            .frameOptions(frameOptions -> frameOptions.sameOrigin()))
+        .httpBasic(Customizer.withDefaults());
     return http.build();
   }
 
