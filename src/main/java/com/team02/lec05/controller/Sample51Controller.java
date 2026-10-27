@@ -39,16 +39,40 @@ public class Sample51Controller {
   @GetMapping("step3")
   @Transactional
   public String sample53(@RequestParam Integer id, ModelMap model) {
-    // 削除対象のフルーツを取得
     Fruit fruit3 = fMapper.selectById(id);
     model.addAttribute("fruit3", fruit3);
 
-    // 削除
     fMapper.deleteById(id);
 
-    // 削除後のフルーツリストを取得
     ArrayList<Fruit> fruits2 = fMapper.selectAllFruit();
     model.addAttribute("fruits2", fruits2);
+    return "sample51.html";
+  }
+
+  @GetMapping("step4")
+  public String sample54(@RequestParam Integer id, ModelMap model) {
+    Fruit fruit4 = fMapper.selectById(id);
+    model.addAttribute("fruit4", fruit4);
+
+    ArrayList<Fruit> fruits2 = fMapper.selectAllFruit();
+    model.addAttribute("fruits2", fruits2);
+
+    return "sample51.html";
+  }
+
+  @PostMapping("step5")
+  public String sample55(@RequestParam Integer id,
+      @RequestParam String name,
+      @RequestParam Integer price,
+      ModelMap model) {
+
+    Fruit fruit = new Fruit(id, name, price);
+
+    fMapper.updateById(fruit);
+
+    ArrayList<Fruit> fruits2 = fMapper.selectAllFruit();
+    model.addAttribute("fruits2", fruits2);
+
     return "sample51.html";
   }
 }
