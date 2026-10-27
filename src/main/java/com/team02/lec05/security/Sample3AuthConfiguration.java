@@ -24,7 +24,8 @@ public class Sample3AuthConfiguration {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/"))
         .authorizeHttpRequests(authz -> authz
-            .anyRequest().authenticated());
+            .requestMatchers("/sample5/**").authenticated()
+            .anyRequest().permitAll());
     return http.build();
   }
 
