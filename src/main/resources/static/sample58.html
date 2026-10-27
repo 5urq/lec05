@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample5-8</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/sample58/step1');
+      sse.onmessage = function (event) {
+        console.log("role:", event.lastEventId, "count:", event.data);
+        var roleElem = document.getElementById("role");
+        if (roleElem) {
+          roleElem.textContent = event.lastEventId;
+        }
+        var p1Elem = document.getElementById("p1");
+        if (p1Elem) {
+          p1Elem.textContent = event.data;
+        }
+      };
+    };
+  </script>
+</head>
+
+<body>
+  <h1>Sample5-8: SSE by Role</h1>
+  <p>Role: <span id="role"></span></p>
+  <p id="p1"></p>
+  <p><a href="/logout">ログアウト</a></p>
+</body>
+
+</html>
