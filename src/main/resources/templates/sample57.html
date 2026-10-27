@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample5-7</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/sample5/step9');
+      sse.onmessage = function (event) {
+        console.log("SSE received:", event.data);
+        var fruits = JSON.parse(event.data);
+        var tbody = document.getElementById("fruits_tbody");
+        if (tbody) {
+          tbody.innerHTML = "";
+          for (var i = 0; i < fruits.length; i++) {
+            var f = fruits[i];
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + i + "</td>"
+              + "<td>" + f.name + "</td>"
+              + "<td>" + f.price + "</td>"
+              + "<td><a href='/sample5/step8?id=" + f.id + "'>購入</a></td>";
+            tbody.appendChild(tr);
+          }
+        }
+      };
+    };
+  </script>
+</head>
+
+<body>
+  <h1>Authorized! <span sec:authentication="name"></span></h1>
+  <a href="/logout">ログアウト</a>
+
+  <h2>Online Fruits Shop (DB & SSE)</h2>
+
+  <div th:if="${fruits}">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>果物</th>
+          <th>金額</th>
+          <th>処理</th>
+        </tr>
+      </thead>
+      <tbody id="fruits_tbody">
+        <tr th:each="fruit,stat:${fruits}">
+          <td>[[${stat.index}]]</td>
+          <td>[[${fruit.name}]]</td>
+          <td>[[${fruit.price}]]</td>
+          <td><a th:href="@{/sample5/step8(id=${fruit.id})}">購入</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div th:if="${fruit}">
+    <p>[[${fruit.name}]]を[[${fruit.price}]]円で購入しました</p>
+  </div>
+</body>
+
+</html>
