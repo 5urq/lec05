@@ -25,14 +25,19 @@ public class Sample3AuthConfiguration {
             .logoutSuccessUrl("/"))
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/sample5/**").authenticated()
-            .anyRequest().permitAll());
+            .anyRequest().permitAll())
+        .csrf(csrf -> csrf
+            .ignoringRequestMatchers("/h2-console/*"))
+        .headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions.sameOrigin()));
     return http.build();
   }
 
   /**
    * 認証処理に関する設定
    * ユーザ: customer1, customer2 (CUSTOMERロール), seller (SELLERロール)
-   * パスワード: p@ss ({bcrypt}$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e)
+   * パスワード: p@ss
+   * ({bcrypt}$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e)
    */
   @Bean
   public InMemoryUserDetailsManager userDetailsService() {
